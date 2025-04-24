@@ -1,3 +1,49 @@
+## 💡 **What is AWS Lambda?**
+**AWS Lambda** ही एक **serverless compute service** आहे.
+➡️ म्हणजे काय?
+> *“तुला server manage करायची गरज नाही. फक्त तुझं code लिही, आणि AWS ते automatically चालवेल जेव्हा trigger होईल.”*
+
+## ⚙️ **How Does AWS Lambda Work?**
+इथे Step-by-Step बघ:
+1. **Code Upload कर (Function):** Tu Python, Node.js, Java, Go etc. मध्ये छोटं function तयार करतोस आणि Lambda वर अपलोड करतोस.
+
+2. **Trigger Define कर:** हे function कधी चालावं हे ठरवायचं
+   उदा:
+   - API Gateway वरुन call झालं की
+   - S3 मधे नवीन फाईल आली की
+   - DynamoDB बदलला की
+   - Timer/cron job सारखं
+
+4. **AWS Automatically Handle करते:**
+   - Code चालवायला लागणारा server create करते (background मध्ये)
+   - Scale करते (जेवढं load, तेवढे instances)
+   - आणि use झालं नाही तर बंद करते (no idle cost)
+
+5. **You Only Pay for Usage:** किती वेळ function चाललं – त्यासाठीच पैसे. (Milliseconds पर्यंत billing!)
+
+## 📦 **Use Cases of AWS Lambda**
+
+### 🧾 1. **File Processing (S3)**  
+S3 मध्ये file upload झाली की Lambda function चालवून:
+- image resize कर
+- video convert कर
+- data extract कर
+
+### 🌐 2. **Backend for Web/Mobile Apps**  
+API Gateway + Lambda वापरून आपण backend तयार करू शकतो – *without EC2/servers*.
+
+### ⏰ 3. **Scheduled Tasks (Cron Jobs)**  
+जसं की रोज रात्री 12 ला DB clean करायचा task — Lambda + CloudWatch Event वापरून.
+
+### 💬 4. **Real-time Notifications**  
+कधी queue मधून message आला (SNS/SQS), तेव्हा Lambda चालवून notification, email, webhook send करू शकतो.
+
+### 🔄 5. **Data Transformation / ETL**  
+Lambda वापरून data clean, filter, transform करतो – आणि नंतर दुसऱ्या service मध्ये save करतो (like RDS, S3, etc.).
+
+### 🔐 6. **Security Automation**  
+उदा. जर IAM policy बदली गेली, तर Lambda चालवून alert द्या किंवा auto rollback करा.
+
 ### 1. What is AWS Lambda?
 AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers. It automatically scales and manages the infrastructure required to run your code in response to events.
 
