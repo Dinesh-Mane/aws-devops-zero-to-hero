@@ -27,7 +27,7 @@ Deliver the broadest choice of compute, networking (up to 400 Gbps), and storage
 
 
 
-## EC2 Instance Types
+## EC2 Instance Types (Trick - GA CMS | Balanced speed performance memory and storage | GTaM, A-PiG, CC, MRX1Z1, SId2h1)
 
 Recommended to follow [this](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) page for very detailed and updated information.
 
