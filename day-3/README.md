@@ -1,6 +1,6 @@
 ## Introduction to EC2:
 
-### What is EC2, and why is it important?**
+### What is EC2, and why is it important?
 
 EC2 म्हणजे **Amazon Elastic Compute Cloud** — ही एक AWS ची service आहे, ज्याचा use करून आपण cloud मध्ये secure आणि resizable compute power setup करू शकतो. म्हणजे जर आपल्याला कोणत्याही application साठी server ची गरज असेल, तर आपण EC2 वर quick setup करून application run करू शकतो.  
 त्याचा main benefit म्हणजे on-demand scalable infrastructure — जसं traffic वाढलं की आपण लगेच capacity वाढवू शकतो, आणि कमी traffic असेल तर कमी करू शकतो. म्हणूनच EC2 मुळे 99.99% uptime ठेवता येतं, त्यामुळे आपलं app नेहमी available राहतं.  
@@ -222,7 +222,89 @@ Temporary state before it becomes terminated.
 - Wait for a few seconds… it’s ready!
 
 ---
+## EBS Volume आणि Instance Store यातला फरक 
 
+### 🔄 **Storage Type**  
+- **EBS Volume**: ही *persistent block storage* आहे — म्हणजे instance बंद/terminate केल्यावर सुद्धा data टिकतो.  
+- **Instance Store**: ही *temporary storage* आहे — म्हणजे instance बंद किंवा crash झालं की सगळा data उडतो.
+
+### 🛡 **Durability (टिकाऊपणा)**  
+- **EBS Volume**: खूपच *high durability* असते कारण data हे same Availability Zone मधील multiple hardware वर replicate केलं जातं.  
+- **Instance Store**: कोणतीही durability guarantee नाही. Instance बंद झाला किंवा hardware fail झाला की सगळा data गेलाच म्हणून समजा.
+
+### 💼 **Use Cases (वापर कशासाठी?)**  
+- **EBS Volume**: जर तुला *important data* store करायचा असेल जसे की databases, OS files, application data – तर हाच option बेस्ट आहे.  
+- **Instance Store**: जर तुला फक्त temporary data हवं असेल (जसे की cache, temp files, scratch data) तर हे उपयोगी आहे.
+
+### 🔗 **Attach/Detach**  
+- **EBS Volume**: तू एक instance वरून दुसऱ्या instance ला attach आणि detach करू शकतोस.  
+- **Instance Store**: हे specific त्या instance ला जोडलेलं असतं, detach किंवा दुसऱ्या ठिकाणी वापरता येत नाही.
+
+### 🧾 **Snapshot/Backup**  
+- **EBS Volume**: यात तू *snapshot* घेवू शकतोस – म्हणजे backup तयार करून नंतर restore सुद्धा करू शकतोस.  
+- **Instance Store**: यात कोणताही snapshot किंवा backup support नसतो.
+
+### ⚡ **Performance**  
+- **EBS Volume**: performance हि volume च्या type वर अवलंबून असते (जसे SSD, HDD) — तुला आवडीनुसार निवडता येतं.  
+- **Instance Store**: कारण हि storage host machine ला directly जोडलेली असते, त्यामुळे I/O (read-write) फारच fast असतो — short term processing साठी heavy performance.
+
+### 💰 **Cost (खर्च)**  
+- **EBS Volume**: तुला जितकी storage लागते तितक्याच GB/month नुसार पैसे भरावे लागतात.  
+- **Instance Store**: काही instance types मध्ये ही free मध्ये येते — पण ही long-term साठी योग्य नाही.
+
+### ☁️ **Availability (उपलब्धता)**  
+- **EBS Volume**: instance बंद झाला तरी volume independent आहे — पुन्हा वापरता येतो.  
+- **Instance Store**: जर instance बंद झाला किंवा crash झाला तर हि storage गेलीच.
+---
+
+### 🆚 **S3 vs EBS – मुख्य फरक**
+
+### 🧱 1. **Storage Type (कसली storage आहे?)**
+
+- **S3**: ही *object storage* आहे – म्हणजे आपण data objects (images, videos, backups, documents) फाइल्स म्हणून store करतो.  
+- **EBS**: ही *block storage* आहे – म्हणजे एक hard disk सारखं, ज्यावर operating system, databases, applications चालवू शकतो.
+
+### 🖥 2. **Usage (कशासाठी वापरतात?)**
+
+- **S3**: media files, website backups, logs, documents – *long-term and scalable* data storage साठी.  
+- **EBS**: *EC2 instance च्या operating system किंवा software applications* साठी use होतो.
+
+### 🔄 3. **Attach/Detach**
+
+- **S3**: EC2 ला direct attach होत नाही. API किंवा SDK द्वारे access करावा लागतो.  
+- **EBS**: EC2 instance ला *attach* करता येतो — अगदी जसं physical hard drive ला जोडतो.
+
+### 📂 4. **Data Access Method (कशा प्रकारे data access करतो?)**
+
+- **S3**: *HTTP/HTTPS* द्वारे access करतो. Web browser, SDK, CLI मधून सहज.  
+- **EBS**: EC2 instance वर *mount* करतो आणि normal file system सारखं वापरतो.
+
+### 💾 5. **Persistence (data टिकतो का?)**
+
+- दोन्हीही persistent storage आहेत – म्हणजे instance stop केल्यावरसुद्धा data टिकतो.  
+  पण:
+  - **S3** मध्ये डेटा खूप secure आणि globally available असतो.
+  - **EBS** मध्ये डेटा एका Availability Zone मध्येच accessible असतो.
+
+### ⚡ 6. **Performance**
+
+- **S3**: High throughput साठी optimized आहे – especially *large files* serve करण्यासाठी.  
+- **EBS**: Low latency आणि fast I/O operations साठी optimized – म्हणजे *databases* आणि OS साठी बेस्ट.
+
+### 💸 7. **Cost (खर्च)**
+
+- **S3**: तुला फक्त storage आणि access operations साठी पैसे द्यावे लागतात – *खूपच कमी खर्च*.  
+- **EBS**: तुला provision केलेल्या GB/month नुसार पैसे लागतात – किंचित महाग पण fast आणि flexible.
+
+### ✅ 8. **Best For?**
+
+- **S3**: Backup, archives, media content, static website hosting.  
+- **EBS**: Boot volumes, running databases, app-level storage.
+
+### 🎯 एक सोपा Trick लक्षात ठेवायचा:
+> **S3** = Simple Storage (for files)  
+> **EBS** = Block Storage (for OS/Data disk)
+---
 ## Managing EC2 Instances:
 
 ### 1) Monitoring Performance & Utilization 
@@ -372,6 +454,18 @@ EBS snapshots backup sathi use karayche, jya mule data safe rakha jaata.
 - **EBS volumes** hi **persistent block storage** device ahe je EC2 instances la attach karu shakto.  
 - He volumes data **store** karayla use hote jya mule **stop** and **terminate** kelelya instances madhe pan data safe rahato.  
 - EBS volumes resize karu shakto, backup gheu shakto, ani easily move karu shakto.  
+
+### Q. What Are Key-Pairs In AWS?
+A: A key pair consists of two types of keys - a public key and a private key. The public key is used to encrypt data and stored on the AWS EC2 instance while a private key is used to decrypt data and is kept by the user. Whenever you want to connect to an AWS EC2 instance a key-pair works as a security credential to prove your secure authentication identity and access to EC2 instance via SSH.  
+
+### Q. What Is Elastic Load Balancing (ELB) And How Does It Function?
+A: Elastic Load balancer ( ELB ) is a service provided by AWS that helps in distribution of incoming traffic of the applications across multi targets such as EC2 instances, containers etc.. in one or more Availability zones.  
+
+### Q. What Are The Various Load Balancers Provided By AWS?
+The following are the types of load balancers provided by AWS:
+- **Application Load Balancer:** ALB works on layer 7(application layer) of OSI Model. It supports  HTTP, HTTPS, and gRPC protocols. and works on Round Robin algorithm.
+- **Network Load Balancer:** NLB works on layer 4(Transport layer) of OSI Model. It Supports TCP, UDP, and TLS protocols and works on Flow hash algorithm.
+- **Gateway Load Balancer:** GLB works on network layer (3 and 7).It supports IP-based routing and works on routing table lookup algorithm.
 
 ### 1. What is AWS EC2, and how does it fit into the DevOps workflow?
 Answer: AWS EC2 is a web service that provides resizable compute capacity in the cloud. It plays a pivotal role in DevOps workflows by allowing DevOps engineers to provision and manage virtual machines (instances) for running applications, microservices, and infrastructure as code.
