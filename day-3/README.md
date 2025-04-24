@@ -31,20 +31,15 @@ Deliver the broadest choice of compute, networking (up to 400 Gbps), and storage
 
 Recommended to follow [this](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) page for very detailed and updated information.
 
-**1) General Purpose**
-General Purpose instances हे compute, memory, आणि network resources यांचा balance देण्यासाठी design केले गेले आहेत. हे विविध types च्या applications साठी suitable आहेत, जसे की web servers, small databases, development and test environments, आणि अजून काही.  
+**1) General Purpose** : General Purpose instances हे compute, memory, आणि network resources यांचा balance देण्यासाठी design केले गेले आहेत. हे विविध types च्या applications साठी suitable आहेत, जसे की web servers, small databases, development and test environments, आणि अजून काही.  
 
-**2) Compute Optimized**
-Compute Optimized instances हे memory च्या तुलनेत जास्त compute power देतात. हे workloads साठी perfect आहेत ज्यांना high-performance processing ची आवश्यकता आहे, जसे की batch processing, scientific modeling, gaming servers, आणि high-performance web servers.  
+**2) Compute Optimized** : Compute Optimized instances हे memory च्या तुलनेत जास्त compute power देतात. हे workloads साठी perfect आहेत ज्यांना high-performance processing ची आवश्यकता आहे, जसे की batch processing, scientific modeling, gaming servers, आणि high-performance web servers.  
 
-**3) Memory Optimized**
-Memory Optimized instances हे memory-intensive workloads handle करण्यासाठी design केलेले आहेत. हे applications साठी उपयुक्त आहेत ज्यांना खूप जास्त memory लागते, जसे की in-memory databases, real-time big data analytics, आणि high-performance computing.  
+**3) Memory Optimized** : Memory Optimized instances हे memory-intensive workloads handle करण्यासाठी design केलेले आहेत. हे applications साठी उपयुक्त आहेत ज्यांना खूप जास्त memory लागते, जसे की in-memory databases, real-time big data analytics, आणि high-performance computing.  
 
-**4) Storage Optimized**
-Storage Optimized instances हे applications साठी optimize केलेले आहेत ज्यांना high, sequential read आणि write access लागते. हे tasks साठी perfect आहेत जसे की data warehousing, log processing, आणि distributed file systems.  
+**4) Storage Optimized** : Storage Optimized instances हे applications साठी optimize केलेले आहेत ज्यांना high, sequential read आणि write access लागते. हे tasks साठी perfect आहेत जसे की data warehousing, log processing, आणि distributed file systems.  
 
-**5) Accelerated Computing**
-Accelerated Computing instances हे accelerators पासून equipped असतात, जसे की Graphics Processing Units (GPUs), Field Programmable Gate Arrays (FPGAs), किंवा Application Specific Integrated Circuits (ASICs). हे accelerators main CPU वरून computationally intensive tasks offload करतात, ज्यामुळे specific workloads साठी faster आणि efficient processing मिळते.  
+**5) Accelerated Computing** : Accelerated Computing instances हे accelerators पासून equipped असतात, जसे की Graphics Processing Units (GPUs), Field Programmable Gate Arrays (FPGAs), किंवा Application Specific Integrated Circuits (ASICs). हे accelerators main CPU वरून computationally intensive tasks offload करतात, ज्यामुळे specific workloads साठी faster आणि efficient processing मिळते.  
 
 
 General purpose  
