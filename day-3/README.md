@@ -258,7 +258,91 @@ EC2 instance तयार करताना AWS विचारतो:
 **Step 3: Login to EC2 instance**
 आता EC2 तयार झाल्यावर त्यात SSH login करायचंय:  
 `ssh -i "my-key.pem" ec2-user@<Public-IP>`
-इथे my-key.pem म्हणजे तुझा private key (Key Pair).
+इथे my-key.pem म्हणजे तुझा private key (Key Pair).  
+
+---
+**Absolutely correct विचार केलास तू! 👏** आणि हो — **Access Key ला directly automation scripts मध्ये ठेवणं हे *recommeded नाहीये***. चला हे step-by-step एकदम clearly आणि सुरक्षितपणे समजावून घेऊया:
+
+---
+
+## 🔥 का Access Key direct script मध्ये ठेवायचं *नाही*?
+
+### कारणं:
+
+1. **Security Risk:**  
+   जर script कुठे publicly push झाली (जसं GitHub), तर ती Access Key तिथून कुणीही चोरू शकतं. मग तो attacker तुझ्या AWS account मध्ये काहीही करू शकतो (S3 delete, EC2 create, खर्च वाढवणं वगैरे).
+
+2. **Long-Lived Credentials:**  
+   Access Keys हे *static credentials* आहेत — म्हणजे ते expire होत नाहीत (जोपर्यंत manually delete नाही केलं). त्यामुळे risk जास्त वाढतो.
+
+3. **Audit and Rotation problem:**  
+   तु जर त्या key ला script मध्ये वापरलंस तर जर ती leak झाली, तर finding + rotating ते tough होतं.
+
+---
+🔥 का Access Key direct script मध्ये ठेवायचं नाही?
+कारणं:
+Security Risk:
+जर script कुठे publicly push झाली (जसं GitHub), तर ती Access Key तिथून कुणीही चोरू शकतं. मग तो attacker तुझ्या AWS account मध्ये काहीही करू शकतो (S3 delete, EC2 create, खर्च वाढवणं वगैरे).
+
+Long-Lived Credentials:
+Access Keys हे static credentials आहेत — म्हणजे ते expire होत नाहीत (जोपर्यंत manually delete नाही केलं). त्यामुळे risk जास्त वाढतो.
+
+Audit and Rotation problem:
+तु जर त्या key ला script मध्ये वापरलंस तर जर ती leak झाली, तर finding + rotating ते tough होतं.
+
+## ✅ मग काय करायचं योग्य आहे?
+### ✅ 1. **Use IAM Roles with EC2 (best practice)**
+
+- जर तु EC2 वर automation script चालवत असशील (उदा. Python script to upload to S3), तर script मध्ये key टाकायची गरजच नाही.
+- त्या instead, EC2 instance ला **IAM Role** assign करायचा — ज्यामध्ये specific permission (जसं S3 full access) दिलेले असतात.
+
+📌 Script मग internally AWS SDK वापरून automatic temporary token generate करतो.
+
+> **फायदा:**  
+> No hardcoded keys 🔒 + Auto rotated temporary credentials 🌀
+
+---
+
+### ✅ 2. **Use AWS Secrets Manager / Parameter Store** (for other platforms)
+
+- जर script EC2 वर नाहीय आणि कुठे तरी on-prem किंवा Jenkins सारख्या tool मध्ये चालतेय, तर Access Key आणि Secret Key ला **Secrets Manager** मध्ये securely ठेव.
+
+> त्या script मध्ये AWS CLI वापरून first credential fetch कर — direct script मध्ये key hardcode करू नकोस.
+
+---
+
+### ✅ 3. **Use Environment Variables (only short-term testing)**
+
+- तु short automation करत असशील आणि तुझ्या machine वर test करत असशील, तर `~/.aws/credentials` file किंवा **Environment Variable** वापर:
+
+```bash
+export AWS_ACCESS_KEY_ID=xxxx
+export AWS_SECRET_ACCESS_KEY=yyyy
+```
+
+> But हे फक्त temporary आणि dev purpose साठी ठीक आहे. Production साठी नको!
+
+---
+
+## 🔁 Example: Chukiche vs Yogya
+
+❌ **Wrong:**
+```python
+import boto3
+
+s3 = boto3.client(
+    's3',
+    aws_access_key_id='AKIAxxxxx',
+    aws_secret_access_key='SECRETxxxxx'
+)
+```
+
+✅ **Right (EC2 IAM Role वापरून):**
+```python
+import boto3
+s3 = boto3.client('s3')
+# No need to pass keys manually – AWS SDK internally fetches IAM role credentials
+```
 
 ---
 ## EBS Volume आणि Instance Store यातला फरक 
