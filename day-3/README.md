@@ -244,18 +244,18 @@ Temporary state before it becomes terminated.
 **- Key Pair** : EC2 instance वर SSH ने login करायचं असेल.
 
 ### Scenario: Tula ek web app deploy karaycha ahe on AWS EC2
-**Step 1: AWS Console madhe login**
+**Step 1: AWS Console madhe login**  
 तु AWS ला browser मधून access करतोस → यासाठी IAM user लागतो.  
 जर तु programmatically (CLI/SDK) वापरून EC2 create करणार असशील, तर तुला Access Key लागेल.  
 
-उदा: `aws ec2 run-instances --image-id ami-xxxx --instance-type t2.micro`
-ह्या command ला Access Key ID + Secret Access Key लागतील authentication साठी.
+उदा: `aws ec2 run-instances --image-id ami-xxxx --instance-type t2.micro`  
+ह्या command ला Access Key ID + Secret Access Key लागतील authentication साठी.  
 
-**Step 2: EC2 instance launch करताना – Key Pair निवडतोस**
+**Step 2: EC2 instance launch करताना – Key Pair निवडतोस**  
 EC2 instance तयार करताना AWS विचारतो:
 - "Which key pair to use?" - इथे आपण .pem file generate करतो (Key Pair).
 
-**Step 3: Login to EC2 instance**
+**Step 3: Login to EC2 instance**  
 आता EC2 तयार झाल्यावर त्यात SSH login करायचंय:  
 `ssh -i "my-key.pem" ec2-user@<Public-IP>`
 इथे my-key.pem म्हणजे तुझा private key (Key Pair).  
