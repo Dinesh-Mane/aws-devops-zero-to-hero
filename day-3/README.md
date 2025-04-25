@@ -215,6 +215,50 @@ Temporary state before it becomes terminated.
 ### **10. Launch the Instance**
 - Review everything and click **“Launch Instance”**
 - Wait for a few seconds… it’s ready!
+---
+## Access Key vs Key Pair
+### 1. Access Key (for AWS Console/CLI access)
+हे कोणासाठी?  
+→ User साठी — जर तुझं IAM user आहे आणि तुला AWS CLI किंवा SDK वापरून AWS account access करायचं असेल.  
+काय असतं access key मध्ये?
+- Access Key ID (उदाहरण: AKIA...)
+- Secret Access Key (एक गुप्त पासवर्डसारखा key)
+
+📌 Use Case:
+- AWS CLI वापरून EC2 instance launch करायचं, S3 मधून फाईल download करायची etc.
+- Programmatically AWS services access करायला वापरतो.
+
+### 2. Key Pair (for EC2 login)
+हे कोणासाठी?  
+→ EC2 instance साठी — जर तु EC2 instance launch केलं, तर त्यावर SSH ने login करायला लागतो key pair.
+काय असतं key pair मध्ये?
+- Public Key → EC2 instance वर store होतं.
+- Private Key (.pem file) → तुझ्या machine वर ठेवतोस. SSH करताना ही लागते.
+
+📌 Use Case:
+- EC2 instance SSH करून access करायचं असेल तर हाच private key वापरतो.
+- जर key file हरवली, तर instance ला access नाही करता येत (unless alternate method वापरली).
+
+### In-short 
+**- Access key** : AWS CLI किंवा SDK वापरून AWS account access करायचं असेल.   
+**- Key Pair** : EC2 instance वर SSH ने login करायचं असेल.
+
+### Scenario: Tula ek web app deploy karaycha ahe on AWS EC2
+**Step 1: AWS Console madhe login**
+तु AWS ला browser मधून access करतोस → यासाठी IAM user लागतो.  
+जर तु programmatically (CLI/SDK) वापरून EC2 create करणार असशील, तर तुला Access Key लागेल.  
+
+उदा: `aws ec2 run-instances --image-id ami-xxxx --instance-type t2.micro`
+ह्या command ला Access Key ID + Secret Access Key लागतील authentication साठी.
+
+**Step 2: EC2 instance launch करताना – Key Pair निवडतोस**
+EC2 instance तयार करताना AWS विचारतो:
+- "Which key pair to use?" - इथे आपण .pem file generate करतो (Key Pair).
+
+**Step 3: Login to EC2 instance**
+आता EC2 तयार झाल्यावर त्यात SSH login करायचंय:  
+`ssh -i "my-key.pem" ec2-user@<Public-IP>`
+इथे my-key.pem म्हणजे तुझा private key (Key Pair).
 
 ---
 ## EBS Volume आणि Instance Store यातला फरक 
